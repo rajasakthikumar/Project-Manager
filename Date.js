@@ -9,6 +9,11 @@ class FormatedDate {
     return formattedDate;
   }
 
+  getCurrentTimeinMillis() {
+    let time = new Date();
+    return time.getMilliseconds()
+  }
+
 //   get date difference
 getNumberOfDays(from,to = new Date()) {
     let toTime = to.getTime()

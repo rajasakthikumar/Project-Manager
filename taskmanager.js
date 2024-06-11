@@ -50,15 +50,26 @@ class TaskManager {
         }
     }
 
+    getValidTransistion(status) {
+    
+        if (this.validStatus(status) && !this.defaultTransitionsEnabled) {
+            return this.customTransistions[status]
+        } else {
+            return this.defaultTransitions[status]
+        }
+    }
+
     validStatus(status) {
         let inputStatus = status.toUpperCase()
        let allStatues = this.getAllStatus()
        return allStatues.some(([key,value])=> key === inputStatus || value === inputStatus)
     }
 
-    
 
+    makeTransactions() {
 
+    }
 }
 
+module.exports = TaskManager;
 

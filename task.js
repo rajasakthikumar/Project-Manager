@@ -1,15 +1,11 @@
 const FormatedDate = require('./Date.js');
-
+const TaskManager = require('./taskmanager.js')
+const Date = new FormatedDate();
+const TaskController = new TaskManager();
 // task status -open, in-progress, peer-review, Resolve conflict, verified
 
 
-const TaskStatus = {
-    OPEN: 'open',
-    IN_PROGRESS: 'in-progress',
-    PEER_REVIEW: 'peer-review',
-    RESOLVE_CONFLICT: 'resolve-conflict',
-    VERIFIED: 'verified'
-};
+
 
 
 class Task {
@@ -17,12 +13,36 @@ class Task {
         this.taskName = taskName
         this.description = description
         this.taskOwner = [taskOwner]
-        this.createdDate = FormatedDate.getCurrentDate()
-        this.taskStatus = TaskStatus.OPEN
+        this.createdDate = Date.getCurrentDate()
+        this.createdTimeInMillis = Date.getCurrentTimeinMillis()
+        this.updateDate = Date.getCurrentDate()
+        this.updatedTimeInMillis = Date.getCurrentTimeinMillis()
+        this.TaskManager = new TaskManager();
+        this.TaskStatus = this.TaskManager.defaultStatus.OPEN
+        this.taskFlow = [[this.task.status,this.createdTimeInMillis]]
     }
-
+    
     addTaskOwner(taskOwner) {
         this.taskOwner.push(taskOwner)
+    }
+
+    getValidTransistion() {
+        return this.TaskManager.getValidTransistion(this.TaskStatus)
+    }
+    
+    makeTransistion(status) {
+        let validTranstions = this.getValidTransistion()
+        console.log(validTranstions)
+        if(validTranstions.includes(status)) {
+            this.TaskStatus =  status.toUpperCase()
+            this.taskFlow.push([this.TaskStatus,Date.getCurrentTimeinMillis()])
+            this.updatedTimeInMillis = Date.getCurrentTimeinMillis()
+            this.updateDate = Date.getCurrentDate
+        }
+    }
+
+    getTaskFlow() {
+        return this.taskFlow
     }
 }
 
@@ -40,4 +60,6 @@ class TaskOwner {
     }
 }
 
-console.log(new FormatedDate().getCrrentDate())
+let task = new Task()
+console.log(task.getValidTransistion())
+console.log(task.makeTransistion('InProgress'))
